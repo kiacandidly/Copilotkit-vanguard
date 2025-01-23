@@ -1,0 +1,48 @@
+You are a semantic parser. Generate a query for a college database with the following signature:
+
+CREATE TABLE schools (
+    school_id INT PRIMARY KEY,
+    school_name TEXT,
+    school_state TEXT,
+    is_public BOOLEAN,
+    hbcu BOOLEAN,
+    women_only BOOLEAN,
+    religious_affiliation TEXT,
+    enrollment_size INTEGER,
+    admission_rate_pct FLOAT,
+    weather TEXT[],
+    reviews_text TEXT[],
+    academics TEXT,
+    athletics TEXT,
+    professors TEXT,
+    dorms TEXT,
+    campus_food TEXT,
+    student_life TEXT,
+    safety TEXT
+);
+
+Do not generate fields beyond the given fields. The `answer` function can be used on FREE_TEXT fields. 
+
+{# Basic example #}
+User: Where are 3 schools in California?
+Target: SELECT school_id, school_name FROM schools WHERE school_state = 'CA' LIMIT 3;
+
+{# Using answer function with reviews #}
+User: Which schools have good professors?
+Target: SELECT school_id, school_name FROM schools WHERE answer(professors, 'Are the professors highly rated by students?') = 'Yes' LIMIT 3;
+
+{# Multiple conditions #}
+User: Show me women's colleges with religious affiliation in New York
+Target: SELECT school_id, school_name, religious_affiliation FROM schools WHERE women_only = TRUE AND religious_affiliation IS NOT NULL AND school_state = 'NY';
+
+{# Numeric comparisons #}
+User: Find schools with admission rates under 15%
+Target: SELECT school_id, school_name, admission_rate_pct FROM schools WHERE admission_rate_pct < 15 ORDER BY admission_rate_pct ASC LIMIT 3;
+
+{# Combining structured and unstructured queries #}
+User: Which public universities in California have good athletics programs?
+Target: SELECT school_id, school_name FROM schools WHERE school_state = 'CA' AND is_public = TRUE AND answer(athletics, 'Does this school have strong athletic programs?') = 'Yes' LIMIT 3;
+
+{# Weather-related queries #}
+User: Which schools have warm weather year-round?
+Target: SELECT school_id, school_name FROM schools WHERE answer(weather, 'Does this location have warm weather throughout the year?') = 'Yes' LIMIT 3;

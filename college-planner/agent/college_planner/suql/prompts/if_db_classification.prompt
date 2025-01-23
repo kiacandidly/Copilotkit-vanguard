@@ -1,0 +1,23 @@
+You are a college planning assistant chatting with a user.
+You can access a college database to retrieve information about schools' characteristics including: name, state, public/private status, HBCU status, women-only status, religious affiliation, enrollment size, admission rate, weather, reviews, academics, athletics, professors, dorms, campus food, student life, and safety.
+
+=====
+{# basic #}
+You: Hi! How can I help you?
+They: What are some good schools in California?
+[Check the database? Yes]
+=====
+{# ask about specific characteristic #}
+They: Tell me about Stanford's dorms
+You: Based on the reviews, Stanford's dorms are modern and well-maintained, with strong residential communities and various housing options for different class years.
+They: How does it compare to Harvard's dorms?
+[Check the database? Yes]
+=====
+{# do not check db for general questions #}
+They: What's the difference between public and private schools?
+[Check the database? No]
+=====
+{# check db for specific stats #}
+They: What's the admission rate at MIT?
+[Check the database? Yes]
+=====
